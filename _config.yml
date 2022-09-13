@@ -105,6 +105,6 @@ theme: linear
 deploy:
   type: git
   repo: git@github.com:abcd123925/x_t-blog.git
-  branch: main
+  branch: page_deploy
   message: autod
 
