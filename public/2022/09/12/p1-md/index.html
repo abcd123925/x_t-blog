@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+  <title>Raid | xt_blog</title>
+  <meta name="google-site-verification" content="" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="name" content="xt_blog" />
+  <meta itemprop="description" content="" />
+  <meta itemprop="image" content="" />
+  <link rel="shortcut icon" href="" type="image/x-icon">
+  <!-- keywords and description -->
+  
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <script src="//cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+      onload="renderMathInElement(document.body);"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <div id="container">
+    <header>
+  <div class="site-title">
+    <a href="/">
+      xt_blog
+    </a>
+  </div>
+  
+  
+  <p class="links">
+    
+    <a href="">
+      <img src="/images/links/" alt="">
+    </a>
+    
+  </p>
+  
+</header>
+    <div id="main">
+      <article class="post">
+  <h3 class="date">
+  <time datetime="2022-09-12T19:59:55.000Z">
+    Sep 12, 2022
+  </time>
+</h3>
+  <h1>Raid</h1>
+  <p class="post-info">
+  
+  
+  <a href="/2022/09/12/p1-md/#waline" class="post-info-item comment-count waline-comment-count" id="/2022/09/12/p1-md/">获取中...</a>
+  <span class="post-info-item view-count waline-visitor-count" id="/2022/09/12/p1-md/">获取中...</span>
+  
+</p>
+  
+  
+  <article>
+    <h1 id="Raid-ubuntu-16-04"><a href="#Raid-ubuntu-16-04" class="headerlink" title="Raid (ubuntu 16.04)"></a>Raid (ubuntu 16.04)</h1><p>（raid 0 ,raid 1）</p>
+<h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><p> </p>
+<h2 id="最少需要两块盘"><a href="#最少需要两块盘" class="headerlink" title="最少需要两块盘"></a>最少需要两块盘</h2><ul>
+<li><p>这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc</p>
+</li>
+<li><p>通过lsblk命令查看。</p>
+</li>
+</ul>
+<p> </p>
+<h2 id="然后开始配置："><a href="#然后开始配置：" class="headerlink" title="然后开始配置："></a>然后开始配置：</h2><pre><code> 1，sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc (raid 1只需要将level=1)
+</code></pre>
+<h3 id="2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）"><a href="#2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）" class="headerlink" title="2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）"></a>2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）</h3><pre><code>cat /proc/mdstat
+</code></pre>
+<p>(raid 1可以在这一步等待一下，使二者同步（会有进度条）)</p>
+<h3 id="3-格式化md0并挂载："><a href="#3-格式化md0并挂载：" class="headerlink" title="3,格式化md0并挂载："></a>3,格式化md0并挂载：</h3><pre><code>
+- sudo mkfs.ext4 -F /dev/md0
+
+- sudo mkdir -p /mnt/md0
+
+- sudo mount /dev/md0 /mnt/md0
+</code></pre>
+<h3 id="4-查看挂载是否成功（可选）"><a href="#4-查看挂载是否成功（可选）" class="headerlink" title="4,查看挂载是否成功（可选）"></a>4,查看挂载是否成功（可选）</h3><pre><code>df -h -x devtmpfs -x tmpfs
+</code></pre>
+<h3 id="5-保存Array设置"><a href="#5-保存Array设置" class="headerlink" title="5,保存Array设置"></a>5,保存Array设置</h3><pre><code>sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
+
+sudo update-initramfs -u
+</code></pre>
+<p>使挂载后重启有效：</p>
+<pre><code>echo &#39;/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0&#39; | sudo tee -a /etc/fstab
+</code></pre>
+<p>-————————————————————————————————————————–</p>
+<h3 id="删除上述设置，并恢复两块盘："><a href="#删除上述设置，并恢复两块盘：" class="headerlink" title="删除上述设置，并恢复两块盘："></a>删除上述设置，并恢复两块盘：</h3><ul>
+<li>1,sudo umount &#x2F;dev&#x2F;md0 (根据设置的设备名，可以cat &#x2F;proc&#x2F;mdstat查看)</li>
+<li>2，</li>
+</ul>
+<pre><code>sudo mdadm --stop /dev/md0
+
+sudo mdadm --remove /dev/md0
+</code></pre>
+<ul>
+<li>3,查看两块盘的信息（可选）</li>
+</ul>
+<pre><code>lsblk
+</code></pre>
+<ul>
+<li>4,清空盘的superblock</li>
+</ul>
+<pre><code>sudo mdadm --zero-superblock /dev/sdc
+
+sudo mdadm --zero-superblock /dev/sdb
+</code></pre>
+<ul>
+<li>5,注释配置信息。</li>
+</ul>
+<pre><code>（1）sudo vim /etc/fstab
+
+. . .
+
+/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0
+
+1.  sudo vim /etc/mdadm/mdadm.conf
+
+. . .
+
+\# ARRAY /dev/md0 metadata=1.2 name=mdadmwrite:0 UUID=7261fb9c:976d0d97:30bc63ce:85e76e91
+
+ 
+
+\- 6,sudo update-initramfs -u
+
+\---------------------------------------------------------------------------------------------------------------------------
+</code></pre>
+<p> </p>
+<h3 id="raid5设置方法也一样。"><a href="#raid5设置方法也一样。" class="headerlink" title="raid5设置方法也一样。"></a>raid5设置方法也一样。</h3><p>只是最少需要三块盘</p>
+<pre><code>sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=3 /dev/sda /dev/sdb /dev/sdc
+</code></pre>
+<p>其他无差别。</p>
+<h3 id="raid6至少需要四块盘"><a href="#raid6至少需要四块盘" class="headerlink" title="raid6至少需要四块盘"></a>raid6至少需要四块盘</h3><pre><code>sudo mdadm --create --verbose /dev/md0 --level=6 --raid-devices=4 /dev/sda /dev/sdb /dev/sdc /dev/sdd
+</code></pre>
+<h3 id="raid10至少需要三块盘"><a href="#raid10至少需要三块盘" class="headerlink" title="raid10至少需要三块盘"></a>raid10至少需要三块盘</h3><p>可以使用–layout指示布局，不过也可以不用。那么配置方法就与上述的一样。</p>
+<p> </p>
+<p>-————————————————————————————————————————–</p>
+<p> </p>
+<p> </p>
+<p> </p>
+<p><em>参考：How To Create RAID Arrays with mdadm on Ubuntu 16.04 | DigitalOcean</em></p>
+
+  </article>
+  
+  <hr>
+  <blockquote>
+    <p>
+      本文由 <a href="">frf</a> 创作，采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0</a> 国际许可协议。
+    </p>
+    <p>
+      本站文章除注明转载/出处外，均为本站原创或翻译，转载请务必署名。
+    </p>
+  </blockquote>
+  
+</article>
+
+
+<div id="waline"></div>
+
+    </div>
+  </div>
+  <footer>
+  
+  
+  <p id="busuanzi_container_site_pv">
+    本站访问量 <span id="busuanzi_value_site_pv">获取中...</span>
+  </p>
+  
+  <p>
+    Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/syy11cn/hexo-theme-linear">Linear</a> from <a target="_blank" rel="noopener" href="https://syy11.cn">Yiyang Sun</a>
+  </p>
+</footer>
+  
+  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>
+  <script>
+    Waline({
+      el: '#waline',
+      placeholder: '',
+      avatar: 'retro',
+      visitor: true,
+      requiredFields: ['nick', 'mail'],
+      serverURL: '',
+      emoji: [
+        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/bilibili',
+        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/qq',
+        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/alus',
+        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-emoji',
+        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/weibo',
+        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tieba',
+      ]
+    });
+  </script>
+</body>
+
+</html>
