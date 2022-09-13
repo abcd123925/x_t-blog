@@ -1,5 +1,5 @@
 ---
-title: p1.md
+title: Raid 
 date: 2022-09-13 03:59:55
 tags:
 ---
@@ -32,11 +32,11 @@ cat /proc/mdstat
 ### 3,格式化md0并挂载：
 ```
 
--   sudo mkfs.ext4 -F /dev/md0
+- sudo mkfs.ext4 -F /dev/md0
 
--   sudo mkdir -p /mnt/md0
+- sudo mkdir -p /mnt/md0
 
--   sudo mount /dev/md0 /mnt/md0
+- sudo mount /dev/md0 /mnt/md0
 ```
 ### 4,查看挂载是否成功（可选）
 ```
