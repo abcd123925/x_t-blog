@@ -21,7 +21,7 @@ tags:
 
 ## 然后开始配置：
 ```
- 1，sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc (raid 1只需要将l--evel=1)
+ 1，sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc (raid 1只需要将level=1)
 ```
 ###  2,上条命令成功后可以查看/proc/mdstat文件。（可选）
 ```
@@ -44,13 +44,13 @@ df -h -x devtmpfs -x tmpfs
 ```
 ### 5,保存Array设置
 ```
-sudo mdadm --detail --scan \| sudo tee -a /etc/mdadm/mdadm.conf
+sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
 
 sudo update-initramfs -u
 ```
 使挂载后重启有效：
 ```
-echo '/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0' \| sudo tee -a /etc/fstab
+echo '/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab
 ```
 \---------------------------------------------------------------------------------------------------------------------------
 
@@ -122,5 +122,5 @@ sudo mdadm --create --verbose /dev/md0 --level=6 --raid-devices=4 /dev/sda /dev/
 
  
 
-*参考：How To Create RAID Arrays with mdadm on Ubuntu 16.04 \| DigitalOcean*
+*参考：How To Create RAID Arrays with mdadm on Ubuntu 16.04 | DigitalOcean*
 
