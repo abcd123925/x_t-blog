@@ -1,72 +1,278 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
 
 <head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>Raid | xt_blog</title>
-  <meta name="google-site-verification" content="" />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta itemprop="name" content="xt_blog" />
-  <meta itemprop="description" content="" />
-  <meta itemprop="image" content="" />
-  <link rel="shortcut icon" href="" type="image/x-icon">
-  <!-- keywords and description -->
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="frf">
+  <meta name="keywords" content="">
   
-  <meta name="keywords" content="" />
-  <meta name="description" content="" />
+    <meta name="description" content="Raid (ubuntu 16.04)（raid 0 ,raid 1） 准备工作：  最少需要两块盘 这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc  通过lsblk命令查看。     然后开始配置：11，sudo mdadm --create --verbose &#x2F;dev&#x2F;md0 --level&#x3D;0 --raid-devices&#x3D;2 &#x2F;dev&#x2F;sdb &#x2F;d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raid">
+<meta property="og:url" content="https://blog.no1darkknight.top/2022/09/12/p1-md/index.html">
+<meta property="og:site_name" content="xt_blog">
+<meta property="og:description" content="Raid (ubuntu 16.04)（raid 0 ,raid 1） 准备工作：  最少需要两块盘 这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc  通过lsblk命令查看。     然后开始配置：11，sudo mdadm --create --verbose &#x2F;dev&#x2F;md0 --level&#x3D;0 --raid-devices&#x3D;2 &#x2F;dev&#x2F;sdb &#x2F;d">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-12T19:59:55.000Z">
+<meta property="article:modified_time" content="2022-09-13T08:10:22.198Z">
+<meta property="article:author" content="frf">
+<meta name="twitter:card" content="summary_large_image">
   
   
-<link rel="stylesheet" href="/css/style.css">
+  
+  <title>Raid - xt_blog</title>
 
-  <script src="//cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js"></script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js" integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
-      onload="renderMathInElement(document.body);"></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.no1darkknight.top","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
-  <div id="container">
-    <header>
-  <div class="site-title">
-    <a href="/">
-      xt_blog
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
     </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
+</nav>
+
   
-  
-  <p class="links">
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Raid"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
     
-    <a href="">
-      <img src="/images/links/" alt="">
-    </a>
     
-  </p>
-  
-</header>
-    <div id="main">
-      <article class="post">
-  <h3 class="date">
-  <time datetime="2022-09-12T19:59:55.000Z">
-    Sep 12, 2022
-  </time>
-</h3>
-  <h1>Raid</h1>
-  <p class="post-info">
-  
-  
-  <a href="/2022/09/12/p1-md/#waline" class="post-info-item comment-count waline-comment-count" id="/2022/09/12/p1-md/">获取中...</a>
-  <span class="post-info-item view-count waline-visitor-count" id="/2022/09/12/p1-md/">获取中...</span>
-  
-</p>
-  
-  
-  <article>
-    <h1 id="Raid-ubuntu-16-04"><a href="#Raid-ubuntu-16-04" class="headerlink" title="Raid (ubuntu 16.04)"></a>Raid (ubuntu 16.04)</h1><p>（raid 0 ,raid 1）</p>
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-13 03:59" pubdate>
+          2022年9月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Raid</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Raid-ubuntu-16-04"><a href="#Raid-ubuntu-16-04" class="headerlink" title="Raid (ubuntu 16.04)"></a>Raid (ubuntu 16.04)</h1><p>（raid 0 ,raid 1）</p>
 <h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><p> </p>
 <h2 id="最少需要两块盘"><a href="#最少需要两块盘" class="headerlink" title="最少需要两块盘"></a>最少需要两块盘</h2><ul>
 <li><p>这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc</p>
@@ -75,76 +281,34 @@
 </li>
 </ul>
 <p> </p>
-<h2 id="然后开始配置："><a href="#然后开始配置：" class="headerlink" title="然后开始配置："></a>然后开始配置：</h2><pre><code> 1，sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc (raid 1只需要将level=1)
-</code></pre>
-<h3 id="2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）"><a href="#2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）" class="headerlink" title="2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）"></a>2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）</h3><pre><code>cat /proc/mdstat
-</code></pre>
+<h2 id="然后开始配置："><a href="#然后开始配置：" class="headerlink" title="然后开始配置："></a>然后开始配置：</h2><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">1，sudo mdadm <span class="hljs-params">--create</span> <span class="hljs-params">--verbose</span> <span class="hljs-string">/dev/md0</span> <span class="hljs-params">--level=0</span> <span class="hljs-params">--raid-devices=2</span> <span class="hljs-string">/dev/sdb</span> <span class="hljs-string">/dev/sdc</span> <span class="hljs-params">(raid 1只需要将<span class="hljs-attr">level</span>=1)</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）"><a href="#2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）" class="headerlink" title="2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）"></a>2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cat <span class="hljs-regexp">/proc/m</span>dstat<br></code></pre></td></tr></table></figure>
 <p>(raid 1可以在这一步等待一下，使二者同步（会有进度条）)</p>
-<h3 id="3-格式化md0并挂载："><a href="#3-格式化md0并挂载：" class="headerlink" title="3,格式化md0并挂载："></a>3,格式化md0并挂载：</h3><pre><code>
-- sudo mkfs.ext4 -F /dev/md0
-
-- sudo mkdir -p /mnt/md0
-
-- sudo mount /dev/md0 /mnt/md0
-</code></pre>
-<h3 id="4-查看挂载是否成功（可选）"><a href="#4-查看挂载是否成功（可选）" class="headerlink" title="4,查看挂载是否成功（可选）"></a>4,查看挂载是否成功（可选）</h3><pre><code>df -h -x devtmpfs -x tmpfs
-</code></pre>
-<h3 id="5-保存Array设置"><a href="#5-保存Array设置" class="headerlink" title="5,保存Array设置"></a>5,保存Array设置</h3><pre><code>sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
-
-sudo update-initramfs -u
-</code></pre>
+<h3 id="3-格式化md0并挂载："><a href="#3-格式化md0并挂载：" class="headerlink" title="3,格式化md0并挂载："></a>3,格式化md0并挂载：</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><br>- sudo mkfs.ext4 -F <span class="hljs-regexp">/dev/m</span>d0<br><br>- sudo mkdir -p <span class="hljs-regexp">/mnt/m</span>d0<br><br>- sudo mount <span class="hljs-regexp">/dev/m</span>d0 <span class="hljs-regexp">/mnt/m</span>d0<br></code></pre></td></tr></table></figure>
+<h3 id="4-查看挂载是否成功（可选）"><a href="#4-查看挂载是否成功（可选）" class="headerlink" title="4,查看挂载是否成功（可选）"></a>4,查看挂载是否成功（可选）</h3><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">df -h -<span class="hljs-keyword">x</span> devtmpfs -<span class="hljs-keyword">x</span> tmpfs<br></code></pre></td></tr></table></figure>
+<h3 id="5-保存Array设置"><a href="#5-保存Array设置" class="headerlink" title="5,保存Array设置"></a>5,保存Array设置</h3><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sudo mdadm <span class="hljs-params">--detail</span> <span class="hljs-params">--scan</span> | sudo tee -a <span class="hljs-string">/etc/mdadm/mdadm.conf</span><br><br>sudo update-initramfs -u<br></code></pre></td></tr></table></figure>
 <p>使挂载后重启有效：</p>
-<pre><code>echo &#39;/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0&#39; | sudo tee -a /etc/fstab
-</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0&#x27;</span> | sudo <span class="hljs-built_in">tee</span> -a /etc/fstab<br></code></pre></td></tr></table></figure>
 <p>-————————————————————————————————————————–</p>
 <h3 id="删除上述设置，并恢复两块盘："><a href="#删除上述设置，并恢复两块盘：" class="headerlink" title="删除上述设置，并恢复两块盘："></a>删除上述设置，并恢复两块盘：</h3><ul>
-<li>1,sudo umount &#x2F;dev&#x2F;md0 (根据设置的设备名，可以cat &#x2F;proc&#x2F;mdstat查看)</li>
-<li>2，</li>
+<li><p>1,sudo umount &#x2F;dev&#x2F;md0 (根据设置的设备名，可以cat &#x2F;proc&#x2F;mdstat查看)</p>
+</li>
+<li><p>2，</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo mdadm --stop <span class="hljs-regexp">/dev/m</span>d0<br><br>sudo mdadm --remove <span class="hljs-regexp">/dev/m</span>d0<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>3,查看两块盘的信息（可选）</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">lsblk</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>4,清空盘的superblock</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo mdadm --zero-superblock <span class="hljs-regexp">/dev/</span>sdc<br><br>sudo mdadm --zero-superblock <span class="hljs-regexp">/dev/</span>sdb<br></code></pre></td></tr></table></figure></li>
+<li><p>5,注释配置信息。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs gradle">（<span class="hljs-number">1</span>）sudo vim <span class="hljs-regexp">/etc/</span>fstab<br><br>. . .<br><br><span class="hljs-regexp">/dev/m</span>d0 <span class="hljs-regexp">/mnt/m</span>d0 ext4 defaults,nofail,discard <span class="hljs-number">0</span> <span class="hljs-number">0</span><br><br><span class="hljs-number">1</span>.  sudo vim <span class="hljs-regexp">/etc/m</span>dadm/mdadm.conf<br><br>. . .<br><br>\# ARRAY <span class="hljs-regexp">/dev/m</span>d0 metadata=<span class="hljs-number">1.2</span> name=mdadmwrite:<span class="hljs-number">0</span> UUID=<span class="hljs-number">7261</span>fb9c:<span class="hljs-number">976</span>d0d97:<span class="hljs-number">30</span>bc63ce:<span class="hljs-number">85</span>e76e91<br><br> <br><br>\- <span class="hljs-number">6</span>,sudo update-initramfs -u<br><br>\---------------------------------------------------------------------------------------------------------------------------<br></code></pre></td></tr></table></figure></li>
 </ul>
-<pre><code>sudo mdadm --stop /dev/md0
-
-sudo mdadm --remove /dev/md0
-</code></pre>
-<ul>
-<li>3,查看两块盘的信息（可选）</li>
-</ul>
-<pre><code>lsblk
-</code></pre>
-<ul>
-<li>4,清空盘的superblock</li>
-</ul>
-<pre><code>sudo mdadm --zero-superblock /dev/sdc
-
-sudo mdadm --zero-superblock /dev/sdb
-</code></pre>
-<ul>
-<li>5,注释配置信息。</li>
-</ul>
-<pre><code>（1）sudo vim /etc/fstab
-
-. . .
-
-/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0
-
-1.  sudo vim /etc/mdadm/mdadm.conf
-
-. . .
-
-\# ARRAY /dev/md0 metadata=1.2 name=mdadmwrite:0 UUID=7261fb9c:976d0d97:30bc63ce:85e76e91
-
- 
-
-\- 6,sudo update-initramfs -u
-
-\---------------------------------------------------------------------------------------------------------------------------
-</code></pre>
 <p> </p>
 <h3 id="raid5设置方法也一样。"><a href="#raid5设置方法也一样。" class="headerlink" title="raid5设置方法也一样。"></a>raid5设置方法也一样。</h3><p>只是最少需要三块盘</p>
-<pre><code>sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=3 /dev/sda /dev/sdb /dev/sdc
-</code></pre>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo mdadm --create --verbose <span class="hljs-regexp">/dev/m</span>d0 --level=<span class="hljs-number">5</span> --raid-devices=<span class="hljs-number">3</span> <span class="hljs-regexp">/dev/</span>sda <span class="hljs-regexp">/dev/</span>sdb <span class="hljs-regexp">/dev/</span>sdc<br></code></pre></td></tr></table></figure>
 <p>其他无差别。</p>
-<h3 id="raid6至少需要四块盘"><a href="#raid6至少需要四块盘" class="headerlink" title="raid6至少需要四块盘"></a>raid6至少需要四块盘</h3><pre><code>sudo mdadm --create --verbose /dev/md0 --level=6 --raid-devices=4 /dev/sda /dev/sdb /dev/sdc /dev/sdd
-</code></pre>
+<h3 id="raid6至少需要四块盘"><a href="#raid6至少需要四块盘" class="headerlink" title="raid6至少需要四块盘"></a>raid6至少需要四块盘</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo mdadm --create --verbose <span class="hljs-regexp">/dev/m</span>d0 --level=<span class="hljs-number">6</span> --raid-devices=<span class="hljs-number">4</span> <span class="hljs-regexp">/dev/</span>sda <span class="hljs-regexp">/dev/</span>sdb <span class="hljs-regexp">/dev/</span>sdc <span class="hljs-regexp">/dev/</span>sdd<br></code></pre></td></tr></table></figure>
 <h3 id="raid10至少需要三块盘"><a href="#raid10至少需要三块盘" class="headerlink" title="raid10至少需要三块盘"></a>raid10至少需要三块盘</h3><p>可以使用–layout指示布局，不过也可以不用。那么配置方法就与上述的一样。</p>
 <p> </p>
 <p>-————————————————————————————————————————–</p>
@@ -153,57 +317,329 @@ sudo mdadm --zero-superblock /dev/sdb
 <p> </p>
 <p><em>参考：How To Create RAID Arrays with mdadm on Ubuntu 16.04 | DigitalOcean</em></p>
 
-  </article>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  <hr>
-  <blockquote>
-    <p>
-      本文由 <a href="">frf</a> 创作，采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0</a> 国际许可协议。
-    </p>
-    <p>
-      本站文章除注明转载/出处外，均为本站原创或翻译，转载请务必署名。
-    </p>
-  </blockquote>
   
-</article>
+</div>
 
 
-<div id="waline"></div>
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Raid</div>
+      <div>https://blog.no1darkknight.top/2022/09/12/p1-md/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>frf</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
 
     </div>
   </div>
-  <footer>
-  
-  
-  <p id="busuanzi_container_site_pv">
-    本站访问量 <span id="busuanzi_value_site_pv">获取中...</span>
-  </p>
-  
-  <p>
-    Powered by <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/syy11cn/hexo-theme-linear">Linear</a> from <a target="_blank" rel="noopener" href="https://syy11.cn">Yiyang Sun</a>
-  </p>
-</footer>
-  
-  <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
-  </script>
-  <script>
-    Waline({
-      el: '#waline',
-      placeholder: '',
-      avatar: 'retro',
-      visitor: true,
-      requiredFields: ['nick', 'mail'],
-      serverURL: '',
-      emoji: [
-        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/bilibili',
-        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/qq',
-        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/alus',
-        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tw-emoji',
-        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/weibo',
-        'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/tieba',
-      ]
-    });
-  </script>
-</body>
+</div>
 
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
 </html>
