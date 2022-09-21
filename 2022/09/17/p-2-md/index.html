@@ -16,23 +16,31 @@
   <meta name="author" content="frf">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Raid (ubuntu 16.04)（raid 0 ,raid 1） 准备工作：  最少需要两块盘 这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc  通过lsblk命令查看。     然后开始配置：11，sudo mdadm --create --verbose &#x2F;dev&#x2F;md0 --level&#x3D;0 --raid-devices&#x3D;2 &#x2F;dev&#x2F;sdb &#x2F;d">
+    <meta name="description" content="gdb的简单使用方法笔记1.文件的加载与调试启动 使用的文件是test.cpp,编译时添加参数：-g 开始调试：gdb test.out(编译时指定了：-o test.out)  ,但是也可以在启动gdb 后进行添加：file test.out。 开始调试的命令是：start,有一个命令是run，刚开始调试时应该使用start,run会直接运行到结束或者断点所在处。  2.开始调试以后可以使用li">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Raid">
-<meta property="og:url" content="https://blog.no1darkknight.top/2022/09/12/p1-md/index.html">
+<meta property="og:title" content="gdb简单使用笔记">
+<meta property="og:url" content="https://blog.no1darkknight.top/2022/09/17/p-2-md/index.html">
 <meta property="og:site_name" content="xt_blog">
-<meta property="og:description" content="Raid (ubuntu 16.04)（raid 0 ,raid 1） 准备工作：  最少需要两块盘 这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc  通过lsblk命令查看。     然后开始配置：11，sudo mdadm --create --verbose &#x2F;dev&#x2F;md0 --level&#x3D;0 --raid-devices&#x3D;2 &#x2F;dev&#x2F;sdb &#x2F;d">
+<meta property="og:description" content="gdb的简单使用方法笔记1.文件的加载与调试启动 使用的文件是test.cpp,编译时添加参数：-g 开始调试：gdb test.out(编译时指定了：-o test.out)  ,但是也可以在启动gdb 后进行添加：file test.out。 开始调试的命令是：start,有一个命令是run，刚开始调试时应该使用start,run会直接运行到结束或者断点所在处。  2.开始调试以后可以使用li">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-12T19:59:55.000Z">
-<meta property="article:modified_time" content="2022-09-16T12:43:32.916Z">
+<meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-list.png">
+<meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-disprint.png">
+<meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-dp.png">
+<meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-disas.png">
+<meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-fx.png">
+<meta property="article:published_time" content="2022-09-17T23:37:47.000Z">
+<meta property="article:modified_time" content="2022-09-21T13:12:48.650Z">
 <meta property="article:author" content="frf">
+<meta property="article:tag" content="gdb">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blog.no1darkknight.top/imgs/gdb-list.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Raid - xt_blog</title>
+  <title>gdb简单使用笔记 - xt_blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -197,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Raid"></span>
+            <span id="subtitle" data-typed-text="gdb简单使用笔记"></span>
           
         </div>
 
@@ -208,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-09-13 03:59" pubdate>
-          2022年9月13日 凌晨
+        <time datetime="2022-09-18 07:37" pubdate>
+          2022年9月18日 早上
         </time>
       </span>
     
@@ -220,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          1.2k 字
         
       </span>
     
@@ -231,7 +239,7 @@
         
         
         
-          14 分钟
+          10 分钟
         
       </span>
     
@@ -269,55 +277,49 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Raid</h1>
+            <h1 style="display: none">gdb简单使用笔记</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Raid-ubuntu-16-04"><a href="#Raid-ubuntu-16-04" class="headerlink" title="Raid (ubuntu 16.04)"></a>Raid (ubuntu 16.04)</h1><p>（raid 0 ,raid 1）</p>
-<h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><p> </p>
-<h2 id="最少需要两块盘"><a href="#最少需要两块盘" class="headerlink" title="最少需要两块盘"></a>最少需要两块盘</h2><ul>
-<li><p>这里使用的是&#x2F;dev&#x2F;sdb和&#x2F;dev&#x2F;sdc</p>
-</li>
-<li><p>通过lsblk命令查看。</p>
-</li>
+                <h1 id="gdb的简单使用方法笔记"><a href="#gdb的简单使用方法笔记" class="headerlink" title="gdb的简单使用方法笔记"></a>gdb的简单使用方法笔记</h1><h2 id="1-文件的加载与调试启动"><a href="#1-文件的加载与调试启动" class="headerlink" title="1.文件的加载与调试启动"></a>1.文件的加载与调试启动</h2><ul>
+<li>使用的文件是test.cpp,编译时添加参数：-g</li>
+<li>开始调试：gdb test.out(编译时指定了：-o test.out)  ,但是也可以在启动gdb 后<br>进行添加：file test.out。</li>
+<li>开始调试的命令是：start,有一个命令是run，刚开始调试时应该使用start,run会直接运行到结束或者断点所在处。</li>
 </ul>
-<p> </p>
-<h2 id="然后开始配置："><a href="#然后开始配置：" class="headerlink" title="然后开始配置："></a>然后开始配置：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">1，sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/sdb /dev/sdc (raid 1只需要将level=1)<br></code></pre></td></tr></table></figure>
-<h3 id="2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）"><a href="#2-上条命令成功后可以查看-x2F-proc-x2F-mdstat文件。（可选）" class="headerlink" title="2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）"></a>2,上条命令成功后可以查看&#x2F;proc&#x2F;mdstat文件。（可选）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /proc/mdstat<br></code></pre></td></tr></table></figure>
-<p>(raid 1可以在这一步等待一下，使二者同步（会有进度条）)</p>
-<h3 id="3-格式化md0并挂载："><a href="#3-格式化md0并挂载：" class="headerlink" title="3,格式化md0并挂载："></a>3,格式化md0并挂载：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>- sudo mkfs.ext4 -F /dev/md0<br><br>- sudo <span class="hljs-built_in">mkdir</span> -p /mnt/md0<br><br>- sudo mount /dev/md0 /mnt/md0<br></code></pre></td></tr></table></figure>
-<h3 id="4-查看挂载是否成功（可选）"><a href="#4-查看挂载是否成功（可选）" class="headerlink" title="4,查看挂载是否成功（可选）"></a>4,查看挂载是否成功（可选）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">df</span> -h -x devtmpfs -x tmpfs<br></code></pre></td></tr></table></figure>
-<h3 id="5-保存Array设置"><a href="#5-保存Array设置" class="headerlink" title="5,保存Array设置"></a>5,保存Array设置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo mdadm --detail --scan | sudo <span class="hljs-built_in">tee</span> -a /etc/mdadm/mdadm.conf<br><br>sudo update-initramfs -u<br></code></pre></td></tr></table></figure>
-<p>使挂载后重启有效：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0&#x27;</span> | sudo <span class="hljs-built_in">tee</span> -a /etc/fstab<br></code></pre></td></tr></table></figure>
-<p>-————————————————————————————————————————–</p>
-<h3 id="删除上述设置，并恢复两块盘："><a href="#删除上述设置，并恢复两块盘：" class="headerlink" title="删除上述设置，并恢复两块盘："></a>删除上述设置，并恢复两块盘：</h3><ul>
-<li><p>1,sudo umount &#x2F;dev&#x2F;md0 (根据设置的设备名，可以cat &#x2F;proc&#x2F;mdstat查看)</p>
-</li>
-<li><p>2，</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo mdadm --stop /dev/md0<br><br>sudo mdadm --remove /dev/md0<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>3,查看两块盘的信息（可选）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsblk<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>4,清空盘的superblock</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo mdadm --zero-superblock /dev/sdc<br><br>sudo mdadm --zero-superblock /dev/sdb<br></code></pre></td></tr></table></figure></li>
-<li><p>5,注释配置信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">（1）sudo vim /etc/fstab<br><br>. . .<br><br>/dev/md0 /mnt/md0 ext4 defaults,nofail,discard 0 0<br><br>1.  sudo vim /etc/mdadm/mdadm.conf<br><br>. . .<br><br>\<span class="hljs-comment"># ARRAY /dev/md0 metadata=1.2 name=mdadmwrite:0 UUID=7261fb9c:976d0d97:30bc63ce:85e76e91</span><br><br> <br><br>\- 6,sudo update-initramfs -u<br><br>\---------------------------------------------------------------------------------------------------------------------------<br></code></pre></td></tr></table></figure></li>
+<h2 id="2-开始调试以后可以使用list-step-next"><a href="#2-开始调试以后可以使用list-step-next" class="headerlink" title="2.开始调试以后可以使用list,step ,next"></a>2.开始调试以后可以使用list,step ,next</h2><ul>
+<li>list(可以简写为l，事实上大多数命令都可以在不冲突的情况下简写),list是用来显<br>源文件内容的，便于调试；<br><img src="/../imgs/gdb-list.png" srcset="/img/loading.gif" lazyload alt="img"></li>
+<li>step,next最为常用的调试手段，和vs下的”逐语句“，”逐过此“是一样的；如果进入 函数可以使用：finish,return快速返回，不同在于return 返回时可以指定返回值；</li>
 </ul>
-<p> </p>
-<h3 id="raid5设置方法也一样。"><a href="#raid5设置方法也一样。" class="headerlink" title="raid5设置方法也一样。"></a>raid5设置方法也一样。</h3><p>只是最少需要三块盘</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo mdadm --create --verbose /dev/md0 --level=5 --raid-devices=3 /dev/sda /dev/sdb /dev/sdc<br></code></pre></td></tr></table></figure>
-<p>其他无差别。</p>
-<h3 id="raid6至少需要四块盘"><a href="#raid6至少需要四块盘" class="headerlink" title="raid6至少需要四块盘"></a>raid6至少需要四块盘</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo mdadm --create --verbose /dev/md0 --level=6 --raid-devices=4 /dev/sda /dev/sdb /dev/sdc /dev/sdd<br></code></pre></td></tr></table></figure>
-<h3 id="raid10至少需要三块盘"><a href="#raid10至少需要三块盘" class="headerlink" title="raid10至少需要三块盘"></a>raid10至少需要三块盘</h3><p>可以使用–layout指示布局，不过也可以不用。那么配置方法就与上述的一样。</p>
-<p> </p>
-<p>-————————————————————————————————————————–</p>
-<p> </p>
-<p> </p>
-<p> </p>
-<p><em>参考：How To Create RAID Arrays with mdadm on Ubuntu 16.04 | DigitalOcean</em></p>
+<h2 id="3-显示，打印数据：print-display-info"><a href="#3-显示，打印数据：print-display-info" class="headerlink" title="3.显示，打印数据：print,display,info"></a>3.显示，打印数据：print,display,info</h2><ul>
+<li>其中print与display功能最为相似，都可以打印出变量的信息,都可以指定<br> 数据输出格式(常用的有&#x2F;x 16进制 &#x2F;o 八进制 &#x2F;t 二进制)：<br> <img src="/../imgs/gdb-disprint.png" srcset="/img/loading.gif" lazyload alt="img"><br>不同在于当没有参数时，print只会显示上一次打印的信息，而display可以返回<br>多次信息(并且在调试时一直显示，可以使用undisplay停止显示。)<br> <img src="/../imgs/gdb-dp.png" srcset="/img/loading.gif" lazyload alt="img"></li>
+<li>info  用来显示一些信息，比如断点信息，frame信息等等。</li>
+</ul>
+<h2 id="3-汇编代码显示"><a href="#3-汇编代码显示" class="headerlink" title="3.汇编代码显示"></a>3.汇编代码显示</h2><ul>
+<li>使用的是disassemble(简写为disas）<br> <img src="/../imgs/gdb-disas.png" srcset="/img/loading.gif" lazyload alt="img"><br> 首先linux下使用的汇编语言是AT&amp;T类型的,查看汇编可知：<br> <img src="/../imgs/gdb-fx.png" srcset="/img/loading.gif" lazyload alt="img"><br> 蓝色线框是调用函数后的一般步骤，即将返回地址先入栈，同时可以知道不同<br> 类型的数据占据的大小，而且这里我们可以看到在底层引用与指针的实现是一样的。</li>
+</ul>
+<h2 id="4-断点与其他一些命令"><a href="#4-断点与其他一些命令" class="headerlink" title="4.断点与其他一些命令"></a>4.断点与其他一些命令</h2><ul>
+<li>在gdb调试时可以支持三种断点，但是通常一种就够了.break用来指定打断<br>点的位置。不加参数就是在当前行添加断点，加数字表示在某行添加断点。<br>用info breakpoints可以查看断点信息，clear可以清除断点：</li>
+</ul>
+<pre>(gdb) b
+
+Breakpoint 4 at <font color="#367BF0">0x4011d7</font>: file <font color="#5EBDAB">test.cpp</font>, line 15.
+(gdb) b 15
+
+Note: breakpoint 4 also set at pc <font color="#367BF0">0x4011d7</font>.
+Breakpoint 5 at <font color="#367BF0">0x4011d7</font>: file <font color="#5EBDAB">test.cpp</font>, line 15.
+(gdb) info b
+bookmarks    breakpoints  
+(gdb) info breakpoints
+
+Num     Type           Disp Enb Address            What
+4       breakpoint     keep y   <font color="#367BF0">0x00000000004011d7</font> <font color="#5EBDAB">test.cpp</font>:15
+5       breakpoint     keep y   <font color="#367BF0">0x00000000004011d7</font> in <font color="#FEA44C">main()</font> at <font color="#5EBDAB">test.cpp</font>:15
+(gdb) clear
+
+Deleted breakpoints 4 5 
+</pre>
+<p>值得一提的是可以在gdb中执行shell命令，!+命令就行了。</p>
 
                 
               </div>
@@ -326,6 +328,36 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">个人学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/gdb/">#gdb</a>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+    </div>
   
 </div>
 
@@ -335,8 +367,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Raid</div>
-      <div>https://blog.no1darkknight.top/2022/09/12/p1-md/</div>
+      <div>gdb简单使用笔记</div>
+      <div>https://blog.no1darkknight.top/2022/09/17/p-2-md/</div>
     </div>
     <div class="license-meta">
       
@@ -348,7 +380,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年9月13日</div>
+          <div>2022年9月18日</div>
         </div>
       
       
@@ -380,15 +412,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/09/17/p-2-md/" title="gdb简单使用笔记">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">gdb简单使用笔记</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/09/12/p1-md/" title="Raid">
+                        <span class="hidden-mobile">Raid</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
