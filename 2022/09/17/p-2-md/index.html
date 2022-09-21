@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-disas.png">
 <meta property="og:image" content="https://blog.no1darkknight.top/imgs/gdb-fx.png">
 <meta property="article:published_time" content="2022-09-17T23:37:47.000Z">
-<meta property="article:modified_time" content="2022-09-21T13:25:06.194Z">
+<meta property="article:modified_time" content="2022-09-21T13:49:29.806Z">
 <meta property="article:author" content="frf">
 <meta property="article:tag" content="gdb">
 <meta property="article:tag" content="linux">
@@ -313,6 +313,8 @@
 <h2 id="4-断点与其他一些命令"><a href="#4-断点与其他一些命令" class="headerlink" title="4.断点与其他一些命令"></a>4.断点与其他一些命令</h2><ul>
 <li>在gdb调试时可以支持三种断点，但是通常一种就够了.break用来指定打断点的位置。不加参数就是在当前行添加断点，加数字表示在某行添加断点。<br>用info breakpoints可以查看断点信息，clear可以清除断点：</li>
 </ul>
+<font color="#5EBDAB">
+
 <pre>(gdb) b
 
 Breakpoint 4 at <font color="#367BF0">0x4011d7</font>: file <font color="#5EBDAB">test.cpp</font>, line 15.
@@ -331,7 +333,8 @@ Num     Type           Disp Enb Address            What
 
 Deleted breakpoints 4 5 
 </pre>
-<p>值得一提的是可以在gdb中执行shell命令，!+命令就行了。</p>
+</font>
+值得一提的是可以在gdb中执行shell命令，!+命令就行了。
 
                 
               </div>
